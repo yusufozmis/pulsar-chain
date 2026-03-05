@@ -47,8 +47,8 @@ func NewKeeper(
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
 
-		CosmosToMina: collections.NewMap(sb, collections.NewPrefix("pulsar"), "cosmos_to_mina", collections.BytesKey, collections.BytesValue),
-		MinaToCosmos: collections.NewMap(sb, collections.NewPrefix("pulsar"), "mina_to_cosmos", collections.BytesKey, collections.BytesValue),
+		CosmosToMina: collections.NewMap(sb, collections.NewPrefix(0), "cosmos_to_mina", collections.BytesKey, collections.BytesValue),
+		MinaToCosmos: collections.NewMap(sb, collections.NewPrefix(1), "mina_to_cosmos", collections.BytesKey, collections.BytesValue),
 	}
 	schema, err := sb.Build()
 	if err != nil {
