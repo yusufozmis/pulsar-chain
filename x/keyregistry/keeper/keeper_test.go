@@ -12,6 +12,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/stretchr/testify/require"
 
 	"github.com/node101-io/pulsar-chain/x/keyregistry/keeper"
 	module "github.com/node101-io/pulsar-chain/x/keyregistry/module"
@@ -53,4 +54,31 @@ func initFixture(t *testing.T) *fixture {
 		keeper:       k,
 		addressCodec: addressCodec,
 	}
+}
+
+var CosmosPubKey = []byte("cosmos")
+var MinaPubKey = []byte("mina")
+
+func TestCosmosToMina(t *testing.T) {
+	f := initFixture(t)
+
+	err := f.keeper.CosmosToMina.Set(f.ctx, CosmosPubKey, MinaPubKey)
+	require.NoError(t, err)
+
+	pubKey, err := f.keeper.CosmosToMina.Get(f.ctx, CosmosPubKey)
+	require.NoError(t, err)
+
+	require.Equal(t, MinaPubKey, pubKey)
+}
+
+func TestMinaToCosmos(t *testing.T) {
+	f := initFixture(t)
+
+	err := f.keeper.MinaToCosmos.Set(f.ctx, MinaPubKey, CosmosPubKey)
+	require.NoError(t, err)
+
+	pubKey, err := f.keeper.MinaToCosmos.Get(f.ctx, MinaPubKey)
+	require.NoError(t, err)
+
+	require.Equal(t, CosmosPubKey, pubKey)
 }
