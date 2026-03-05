@@ -11,6 +11,9 @@ import (
 	"github.com/node101-io/pulsar-chain/x/keyregistry/types"
 )
 
+const CosmosToMina string = "cosmos_to_mina"
+const MinaToCosmos string = "mina_to_cosmos"
+
 type Keeper struct {
 	storeService corestore.KVStoreService
 	cdc          codec.Codec
@@ -47,8 +50,8 @@ func NewKeeper(
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
 
-		CosmosToMina: collections.NewMap(sb, collections.NewPrefix(0), "cosmos_to_mina", collections.BytesKey, collections.BytesValue),
-		MinaToCosmos: collections.NewMap(sb, collections.NewPrefix(1), "mina_to_cosmos", collections.BytesKey, collections.BytesValue),
+		CosmosToMina: collections.NewMap(sb, types.CosmosToMina, CosmosToMina, collections.BytesKey, collections.BytesValue),
+		MinaToCosmos: collections.NewMap(sb, types.MinaToCosmos, MinaToCosmos, collections.BytesKey, collections.BytesValue),
 	}
 	schema, err := sb.Build()
 	if err != nil {
