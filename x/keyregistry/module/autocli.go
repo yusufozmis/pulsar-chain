@@ -17,6 +17,20 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "params",
 					Short:     "Shows the parameters of the module",
 				},
+				{
+					RpcMethod:      "GetMinaPubKey",
+					Use:            "get-mina-pub-key [cosmos-pub-key]",
+					Short:          "Query GetMinaPubKey",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "cosmos_pub_key", Varargs: true}},
+				},
+
+				{
+					RpcMethod:      "GetCosmosPubKey",
+					Use:            "get-cosmos-pub-key [mina-pub-key]",
+					Short:          "Query GetCosmosPubKey",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "mina_pub_key", Varargs: true}},
+				},
+
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
