@@ -7,6 +7,11 @@ import "pulsarchain/keyregistry/v1/params.proto";
 
 option go_package = "github.com/node101-io/pulsar-chain/x/keyregistry/types";
 
+message KeyPair {
+  bytes mina_key = 1;
+  bytes cosmos_key = 2;
+}
+
 // GenesisState defines the keyregistry module's genesis state.
 message GenesisState {
   // params defines all the parameters of the module.
@@ -14,4 +19,5 @@ message GenesisState {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+  repeated KeyPair keys = 2;
 }
