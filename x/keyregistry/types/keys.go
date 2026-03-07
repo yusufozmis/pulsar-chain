@@ -17,5 +17,5 @@ const (
 
 // ParamsKey is the prefix to retrieve all Params
 var ParamsKey = collections.NewPrefix("p_keyregistry")
-var CosmosToMina = collections.NewPrefix("cosmos_map")
-var MinaToCosmos = collections.NewPrefix("mina_map")
+var CosmosToMinaPrefix = collections.NewPrefix("cosmos_map")
+var MinaToCosmosPrefix = collections.NewPrefix("mina_map")

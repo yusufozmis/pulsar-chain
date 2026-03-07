@@ -18,7 +18,7 @@ func (q queryServer) GetMinaPubKey(ctx context.Context, req *types.QueryGetMinaP
 
 	exists, err := q.k.CosmosToMina.Has(sdkCtx, req.CosmosPubKey)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "Internal Error")
+		return nil, status.Error(codes.Internal, "internal Error")
 	}
 
 	if !exists {

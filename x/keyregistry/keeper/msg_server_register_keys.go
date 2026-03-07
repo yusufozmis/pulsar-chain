@@ -32,7 +32,7 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 		return nil, errorsmod.Wrap(types.ErrInvalidCreatorAddres, "")
 	}
 
-	if len(msg.CosmosPublicKey) != 33 {
+	if len(msg.CosmosPublicKey) != secp256k1.PubKeySize {
 		return nil, errorsmod.Wrap(types.ErrInvalidPublicKey, "cosmos pubkey must be compressed (33 bytes)")
 	}
 
@@ -55,7 +55,7 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 	cosmosSigValidity := VerifyCosmosSig(msg.CosmosSignature, msg.MinaPublicKey, msg.CosmosPublicKey)
 
 	if !minaSigValidity || !cosmosSigValidity {
-		return nil, errorsmod.Wrap(types.ErrInvalidSignature, "Invalid Cosmos or Mina Signature")
+		return nil, errorsmod.Wrap(types.ErrInvalidSignature, "invalid cosmos or mina signature")
 	}
 
 	err = k.Keeper.CosmosToMina.Set(ctx, msg.CosmosPublicKey, msg.MinaPublicKey)
