@@ -9,7 +9,7 @@ import (
 // InitGenesis initializes the module's state from a provided genesis state.
 func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) error {
 
-	keyPairs := genState.Keys
+	keyPairs := genState.KeyPairs
 
 	for _, keyPair := range keyPairs {
 		err := k.CosmosToMina.Set(ctx, keyPair.CosmosKey, keyPair.MinaKey)
