@@ -12,5 +12,5 @@ var (
 	ErrInvalidSignature     = errors.Register(ModuleName, 1101, "invalid signature")
 	ErrSecondaryKeyExists   = errors.Register(ModuleName, 1102, "secondary key already exists")
 	ErrInvalidCreatorAddres = errors.Register(ModuleName, 1103, "invalid creator address")
-	ErrInvalidPublicKey     = errors.Register(ModuleName, 1104, "invalid Public key")
+	ErrInvalidPublicKey     = errors.Register(ModuleName, 1104, "invalid public key")
 )

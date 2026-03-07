@@ -10,13 +10,6 @@ func DefaultParams() Params {
 	return NewParams()
 }
 
-func NewKeyPairs() []*KeyPair {
-	return []*KeyPair{}
-}
-func DefaultKeyPairs() []*KeyPair {
-	return NewKeyPairs()
-}
-
 // Validate validates the set of params.
 func (p Params) Validate() error {
 
