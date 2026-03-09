@@ -19,7 +19,7 @@ func VerifyCosmosSig(sig string, msg, cosmosPublicKey []byte) bool {
 	return true
 }
 
-func DeriveAddressFromPubkey(cosmosPublicKey []byte) string {
+func deriveAddressFromPubkey(cosmosPublicKey []byte) string {
 	pubKey := secp256k1.PubKey{
 		Key: cosmosPublicKey,
 	}
@@ -36,7 +36,7 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 		return nil, errorsmod.Wrap(types.ErrInvalidPublicKey, "cosmos pubkey must be compressed (33 bytes)")
 	}
 
-	derivedAddress := DeriveAddressFromPubkey(msg.CosmosPublicKey)
+	derivedAddress := deriveAddressFromPubkey(msg.CosmosPublicKey)
 
 	if derivedAddress != msg.Creator {
 		return nil, errorsmod.Wrap(types.ErrInvalidSigner, "creator does not match provided cosmos public key")
