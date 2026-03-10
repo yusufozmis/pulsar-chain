@@ -25,8 +25,8 @@ type Keeper struct {
 	Schema collections.Schema
 	Params collections.Item[types.Params]
 
-	CosmosToMina collections.Map[[]byte, []byte] // Cosmos PubKey --> Mina PubKey
-	MinaToCosmos collections.Map[[]byte, []byte] // Mina PubKey --> Cosmos PubKey
+	cosmosToMina collections.Map[[]byte, []byte] // Cosmos PubKey --> Mina PubKey
+	minaToCosmos collections.Map[[]byte, []byte] // Mina PubKey --> Cosmos PubKey
 }
 
 func NewKeeper(
@@ -50,8 +50,8 @@ func NewKeeper(
 
 		Params: collections.NewItem(sb, types.ParamsKey, "params", codec.CollValue[types.Params](cdc)),
 
-		CosmosToMina: collections.NewMap(sb, types.CosmosToMinaPrefix, CosmosToMinaMapName, collections.BytesKey, collections.BytesValue),
-		MinaToCosmos: collections.NewMap(sb, types.MinaToCosmosPrefix, MinaToCosmosMapName, collections.BytesKey, collections.BytesValue),
+		cosmosToMina: collections.NewMap(sb, types.CosmosToMinaPrefix, CosmosToMinaMapName, collections.BytesKey, collections.BytesValue),
+		minaToCosmos: collections.NewMap(sb, types.MinaToCosmosPrefix, MinaToCosmosMapName, collections.BytesKey, collections.BytesValue),
 	}
 	schema, err := sb.Build()
 	if err != nil {
@@ -68,17 +68,25 @@ func (k Keeper) GetAuthority() []byte {
 }
 
 func (k Keeper) SetCosmosToMina(ctx context.Context, cosmosPublicKey, minaPublicKey []byte) error {
-	return k.CosmosToMina.Set(ctx, cosmosPublicKey, minaPublicKey)
+	return k.cosmosToMina.Set(ctx, cosmosPublicKey, minaPublicKey)
 }
 
 func (k Keeper) GetCosmosToMina(ctx context.Context, cosmosPublicKey []byte) ([]byte, error) {
-	return k.CosmosToMina.Get(ctx, cosmosPublicKey)
+	return k.cosmosToMina.Get(ctx, cosmosPublicKey)
 }
 
 func (k Keeper) SetMinaToCosmos(ctx context.Context, minaPublicKey, cosmosPublicKey []byte) error {
-	return k.MinaToCosmos.Set(ctx, minaPublicKey, cosmosPublicKey)
+	return k.minaToCosmos.Set(ctx, minaPublicKey, cosmosPublicKey)
 }
 
 func (k Keeper) GetMinaToCosmos(ctx context.Context, minaPublicKey []byte) ([]byte, error) {
-	return k.MinaToCosmos.Get(ctx, minaPublicKey)
+	return k.minaToCosmos.Get(ctx, minaPublicKey)
+}
+
+func (k Keeper) CosmosToMinaHas(ctx context.Context, cosmosPublicKey []byte) (bool, error) {
+	return k.cosmosToMina.Has(ctx, cosmosPublicKey)
+}
+
+func (k Keeper) MinaToCosmosHas(ctx context.Context, minaPublicKey []byte) (bool, error) {
+	return k.minaToCosmos.Has(ctx, minaPublicKey)
 }

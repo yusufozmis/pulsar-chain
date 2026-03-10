@@ -19,7 +19,7 @@ func (q queryServer) GetMinaPubKey(ctx context.Context, req *types.QueryGetMinaP
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
 	// Check if the cosmos key exists in the CosmosToMina map.
-	exists, err := q.k.CosmosToMina.Has(sdkCtx, req.CosmosPubKey)
+	exists, err := q.k.cosmosToMina.Has(sdkCtx, req.CosmosPubKey)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal Error")
 	}
@@ -28,7 +28,7 @@ func (q queryServer) GetMinaPubKey(ctx context.Context, req *types.QueryGetMinaP
 		return nil, status.Error(codes.NotFound, "mina key not found for given cosmos key")
 	}
 
-	minaKey, err := q.k.CosmosToMina.Get(sdkCtx, req.CosmosPubKey)
+	minaKey, err := q.k.cosmosToMina.Get(sdkCtx, req.CosmosPubKey)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

@@ -65,10 +65,10 @@ var MinaPubKey = []byte("mina")
 func TestCosmosToMina(t *testing.T) {
 	f := initFixture(t)
 
-	err := f.keeper.CosmosToMina.Set(f.ctx, CosmosPubKey, MinaPubKey)
+	err := f.keeper.SetCosmosToMina(f.ctx, CosmosPubKey, MinaPubKey)
 	require.NoError(t, err)
 
-	pubKey, err := f.keeper.CosmosToMina.Get(f.ctx, CosmosPubKey)
+	pubKey, err := f.keeper.GetCosmosToMina(f.ctx, CosmosPubKey)
 	require.NoError(t, err)
 
 	require.Equal(t, MinaPubKey, pubKey)
@@ -79,10 +79,10 @@ func TestCosmosToMina(t *testing.T) {
 func TestMinaToCosmos(t *testing.T) {
 	f := initFixture(t)
 
-	err := f.keeper.MinaToCosmos.Set(f.ctx, MinaPubKey, CosmosPubKey)
+	err := f.keeper.SetMinaToCosmos(f.ctx, MinaPubKey, CosmosPubKey)
 	require.NoError(t, err)
 
-	pubKey, err := f.keeper.MinaToCosmos.Get(f.ctx, MinaPubKey)
+	pubKey, err := f.keeper.GetMinaToCosmos(f.ctx, MinaPubKey)
 	require.NoError(t, err)
 
 	require.Equal(t, CosmosPubKey, pubKey)

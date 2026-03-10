@@ -56,11 +56,11 @@ func TestRegisterKeysSuccess(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	exists, err := f.keeper.CosmosToMina.Has(f.ctx, pub.Bytes())
+	exists, err := f.keeper.CosmosToMinaHas(f.ctx, pub.Bytes())
 	require.NoError(t, err)
 	require.Equal(t, exists, true)
 
-	exists, err = f.keeper.MinaToCosmos.Has(f.ctx, MinaPubKey)
+	exists, err = f.keeper.MinaToCosmosHas(f.ctx, MinaPubKey)
 	require.NoError(t, err)
 	require.Equal(t, exists, true)
 

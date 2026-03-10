@@ -57,8 +57,8 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 	}
 
 	// Check if either key is already registered to prevent duplicate registrations.
-	cosmosKeyExists, err := k.Keeper.CosmosToMina.Has(ctx, msg.CosmosPublicKey)
-	minaKeyExists, err := k.Keeper.MinaToCosmos.Has(ctx, msg.MinaPublicKey)
+	cosmosKeyExists, err := k.Keeper.cosmosToMina.Has(ctx, msg.CosmosPublicKey)
+	minaKeyExists, err := k.Keeper.minaToCosmos.Has(ctx, msg.MinaPublicKey)
 
 	if cosmosKeyExists || minaKeyExists {
 		return nil, errorsmod.Wrap(types.ErrSecondaryKeyExists, "")
@@ -74,11 +74,11 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 	}
 
 	// Store the key pair in both directions to allow lookups by either key.
-	err = k.Keeper.CosmosToMina.Set(ctx, msg.CosmosPublicKey, msg.MinaPublicKey)
+	err = k.Keeper.cosmosToMina.Set(ctx, msg.CosmosPublicKey, msg.MinaPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	err = k.Keeper.MinaToCosmos.Set(ctx, msg.MinaPublicKey, msg.CosmosPublicKey)
+	err = k.Keeper.minaToCosmos.Set(ctx, msg.MinaPublicKey, msg.CosmosPublicKey)
 	if err != nil {
 		return nil, err
 	}
