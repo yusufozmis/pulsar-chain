@@ -58,8 +58,13 @@ func (k msgServer) RegisterKeys(ctx context.Context, msg *types.MsgRegisterKeys)
 
 	// Check if either key is already registered to prevent duplicate registrations.
 	cosmosKeyExists, err := k.Keeper.cosmosToMina.Has(ctx, msg.CosmosPublicKey)
+	if err != nil {
+		return nil, err
+	}
 	minaKeyExists, err := k.Keeper.minaToCosmos.Has(ctx, msg.MinaPublicKey)
-
+	if err != nil {
+		return nil, err
+	}
 	if cosmosKeyExists || minaKeyExists {
 		return nil, errorsmod.Wrap(types.ErrSecondaryKeyExists, "")
 	}
