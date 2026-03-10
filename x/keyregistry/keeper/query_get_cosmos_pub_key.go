@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// GetCosmosPubKey returns the cosmos public key associated with the given mina public key.
+// Returns NotFound if no mapping exists for the provided mina public key.
 func (q queryServer) GetCosmosPubKey(ctx context.Context, req *types.QueryGetCosmosPubKeyRequest) (*types.QueryGetCosmosPubKeyResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -16,6 +18,7 @@ func (q queryServer) GetCosmosPubKey(ctx context.Context, req *types.QueryGetCos
 
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
+	// Check if the mina key exists in the MinaToCosmos map.
 	exists, err := q.k.MinaToCosmos.Has(sdkCtx, req.MinaPubKey)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal error")

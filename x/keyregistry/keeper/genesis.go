@@ -11,6 +11,7 @@ func (k Keeper) InitGenesis(ctx context.Context, genState types.GenesisState) er
 
 	keyPairs := genState.KeyPairs
 
+	// Insert genesis key pairs.
 	for _, keyPair := range keyPairs {
 
 		err := k.CosmosToMina.Set(ctx, keyPair.CosmosKey, keyPair.MinaKey)
@@ -40,6 +41,7 @@ func (k Keeper) ExportGenesis(ctx context.Context) (*types.GenesisState, error) 
 
 	var existenceMap = make(map[string]bool)
 
+	// Iterate over CosmosToMina map first and collect all key pairs.
 	cosmosIterator, err := k.CosmosToMina.Iterate(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -64,6 +66,15 @@ func (k Keeper) ExportGenesis(ctx context.Context) (*types.GenesisState, error) 
 		cosmosIterator.Next()
 	}
 
+	// Iterate over MinaToCosmos map and collect any key pairs that are not
+	// already present in the CosmosToMina map. Although both maps are expected
+	// to be in sync, this ensures no key pairs are lost in case of any inconsistency
+	// between the two maps during export.
+
+	// ExportGenesis intentionally does not enforce consistency between the two maps.
+	// Returning an error here could prevent the state from being exported and lead
+	// to potential state loss. Consistency checks should instead be handled at the
+	// message implementation level where the mappings are created or updated.
 	minaIterator, err := k.MinaToCosmos.Iterate(ctx, nil)
 	if err != nil {
 		return nil, err

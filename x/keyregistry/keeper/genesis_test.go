@@ -25,6 +25,9 @@ func TestGenesis(t *testing.T) {
 
 	require.EqualExportedValues(t, genesisState.Params, got.Params)
 }
+
+// TestInitAndExportGenesis verifies that a genesis state can be initialized
+// and later exported without losing the registered key pairs.
 func TestInitAndExportGenesis(t *testing.T) {
 
 	f := initFixture(t)

@@ -10,9 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// Mock signatures used across msg server tests.
+// These will be replaced with real signatures once VerifyMinaSig and VerifyCosmosSig are implemented.
 var mockCosmosSignature = "cosmosSig"
 var mockMinaSignature = "minaSig"
 
+// TestRegisterKeysFail verifies that RegisterKeys fails with ErrInvalidPublicKey
+// when the provided cosmos public key is not a valid compressed secp256k1 key (33 bytes).
 func TestRegisterKeysFail(t *testing.T) {
 
 	f := initFixture(t)
@@ -29,6 +33,8 @@ func TestRegisterKeysFail(t *testing.T) {
 	require.ErrorIs(t, err, types.ErrInvalidPublicKey)
 }
 
+// TestRegisterKeysSuccess verifies that RegisterKeys succeeds with valid inputs
+// and ensures that both CosmosToMina and MinaToCosmos mappings are correctly stored.
 func TestRegisterKeysSuccess(t *testing.T) {
 
 	priv := secp256k1.GenPrivKey()
@@ -60,6 +66,8 @@ func TestRegisterKeysSuccess(t *testing.T) {
 
 }
 
+// TestInvalidCreatorAddress verifies that RegisterKeys fails with ErrInvalidCreatorAddres
+// when the creator field is not a valid bech32 address.
 func TestInvalidCreatorAddress(t *testing.T) {
 
 	priv := secp256k1.GenPrivKey()
@@ -79,6 +87,8 @@ func TestInvalidCreatorAddress(t *testing.T) {
 	require.ErrorIs(t, err, types.ErrInvalidCreatorAddres)
 }
 
+// TestInvalidSigner verifies that RegisterKeys fails with ErrInvalidSigner
+// when the creator address does not match the address derived from the provided cosmos public key.
 func TestInvalidSigner(t *testing.T) {
 
 	priv := secp256k1.GenPrivKey()
@@ -107,6 +117,7 @@ func TestInvalidSigner(t *testing.T) {
 }
 
 // TODO: Update require.NoError to require.ErrorIs once the VerifyCosmosSig and VerifyMinaSig is implemented
+// TestInvalidSignature currently expects no error since signature verification is not yet implemented.
 func TestInvalidSignature(t *testing.T) {
 
 	priv := secp256k1.GenPrivKey()
@@ -132,6 +143,8 @@ func TestInvalidSignature(t *testing.T) {
 
 }
 
+// TestInsertSecondaryKeysFail verifies that registering the same key pair twice
+// fails with ErrSecondaryKeyExists on the second attempt.
 func TestInsertSecondaryKeysFail(t *testing.T) {
 	f := initFixture(t)
 
@@ -143,6 +156,7 @@ func TestInsertSecondaryKeysFail(t *testing.T) {
 
 	ms := keeper.NewMsgServerImpl(f.keeper)
 
+	// First registration should succeed.
 	resp, err := ms.RegisterKeys(f.ctx, &types.MsgRegisterKeys{
 		Creator:         addr.String(),
 		CosmosSignature: mockCosmosSignature,
@@ -153,6 +167,7 @@ func TestInsertSecondaryKeysFail(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
+	// Second registration with the same keys should fail.
 	resp, err = ms.RegisterKeys(f.ctx, &types.MsgRegisterKeys{
 		Creator:         addr.String(),
 		CosmosSignature: mockCosmosSignature,

@@ -56,9 +56,12 @@ func initFixture(t *testing.T) *fixture {
 	}
 }
 
+// Dummy public keys used in tests.
 var CosmosPubKey = []byte("cosmos")
 var MinaPubKey = []byte("mina")
 
+// TestCosmosToMina verifies that a cosmos public key can be stored in the
+// CosmosToMina map and correctly retrieved using the same cosmos public key.
 func TestCosmosToMina(t *testing.T) {
 	f := initFixture(t)
 
@@ -71,6 +74,8 @@ func TestCosmosToMina(t *testing.T) {
 	require.Equal(t, MinaPubKey, pubKey)
 }
 
+// TestMinaToCosmos verifies that a mina public key can be stored in the
+// MinaToCosmos map and correctly retrieved using the same mina public key.
 func TestMinaToCosmos(t *testing.T) {
 	f := initFixture(t)
 

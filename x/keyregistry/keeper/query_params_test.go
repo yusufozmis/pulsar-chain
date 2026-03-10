@@ -26,6 +26,8 @@ func TestParamsQuery(t *testing.T) {
 	require.Equal(t, &types.QueryParamsResponse{Params: params}, response)
 }
 
+// TestCosmosMapInvalidArgumentFail verifies that GetCosmosPubKey returns
+// an InvalidArgument error when called with a nil request.
 func TestCosmosMapInvalidArgumentFail(t *testing.T) {
 	f := initFixture(t)
 
@@ -40,6 +42,8 @@ func TestCosmosMapInvalidArgumentFail(t *testing.T) {
 	require.Equal(t, codes.InvalidArgument, st.Code())
 }
 
+// TestMinaMapInvalidArgumentFail verifies that GetMinaPubKey returns
+// an InvalidArgument error when called with a nil request.
 func TestMinaMapInvalidArgumentFail(t *testing.T) {
 	f := initFixture(t)
 
@@ -54,6 +58,8 @@ func TestMinaMapInvalidArgumentFail(t *testing.T) {
 	require.Equal(t, codes.InvalidArgument, st.Code())
 }
 
+// TestCosmosMapPubkeyNotFound verifies that GetCosmosPubKey returns
+// a NotFound error when the provided mina public key has no associated cosmos key.
 func TestCosmosMapPubkeyNotFound(t *testing.T) {
 	f := initFixture(t)
 
@@ -74,6 +80,8 @@ func TestCosmosMapPubkeyNotFound(t *testing.T) {
 	require.Equal(t, codes.NotFound, st.Code())
 }
 
+// TestMinaMapPubkeyNotFound verifies that GetMinaPubKey returns
+// a NotFound error when the provided cosmos public key has no associated mina key.
 func TestMinaMapPubkeyNotFound(t *testing.T) {
 	f := initFixture(t)
 
